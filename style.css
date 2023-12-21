@@ -1,0 +1,23 @@
+body{
+    background-image: url(./images/quiz.jpg) ;
+    background-size: cover;
+    display: block;
+ }
+
+/* .card-body {
+    text-align: center;
+    display: flex;
+    align-items: start;
+    padding-left: 15px;
+    margin-left: 15px;
+    width: 28rem; 
+    height: 28rem;
+    border: 1px solid black;
+ }   */
+/* #rep {
+   display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding-bottom: 45px;
+}  */

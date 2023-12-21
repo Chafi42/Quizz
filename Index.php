@@ -1,6 +1,8 @@
 <?php
 require_once('./connexion.php');
+session_start();
 
+//var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +12,7 @@ require_once('./connexion.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Quizz</title>
 </head>
 
@@ -18,7 +20,8 @@ require_once('./connexion.php');
     <header>
         <nav class="navbar navbar-dark bg-dark fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand fs-2" href="#">Quizz</a>
+                <a class="navbar-brand fs-2">Quizz</a>
+                <a class="navbar-brand fs-2">Stats</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -30,7 +33,17 @@ require_once('./connexion.php');
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Mes stats</a>
+                                <p class="nav-link active">Mes stats</p>
+                                <p>Pseudo : <?php if (isset($_SESSION['user']) && !empty($_SESSION['user'])){
+                                    echo $_SESSION['user']['pseudo'];
+                                }
+                                ?>
+                                </p>
+                                <p>score : <?php if (isset($_SESSION['user']) && !empty($_SESSION['user'])){
+                                    echo $_SESSION['user']['stat'];
+                                }
+                                ?>
+                                </p>
                             </li>
 
                             <li class="nav-item dropdown">
@@ -45,6 +58,11 @@ require_once('./connexion.php');
                                 </ul>
                             </li>
                         </ul>
+                        <!-- si le gars est connecté -->
+                        <?php if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+                            echo '<a href="./bdd/deconnexion_utilisateur.php" class="btn btn-danger"> Deconnexion</a>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -52,30 +70,37 @@ require_once('./connexion.php');
     </header>
 
     <main>
-        <section class="container md pt-5 w-50">
-            <form action="./bdd/pseudo.php" method="post">
-                <div class="mb-3">
-                    <label for="pseudo" class="form-label">Pseudo</label>
-                    <input type="text" class="form-control" id="pseudo" name="pseudo">
-                </div>
-                <button type="submit" class="btn btn-primary">Envoyer</button>
+        <?php if (!isset($_SESSION['user']) || empty($_SESSION['user'])) { ?>
+            <section class="container md pt-5 w-25 d-flex justify-content-center">
+                <form action="./bdd/pseudo.php" method="POST">
+                    <div class="mb-3">
+                        <label for="pseudo" class="form-label">Pseudo</label>
+                        <input type="text" class="form-control" id="pseudo" name="pseudo">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
 
-        </section>
-        <section class="container md">
-            <div class="d-flex justify-content-center pt-5">
-                <div class="d-flex"></div>
-                <div class="card" style="width: 28rem; height: 28rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Question:</h5>
-                        <p class="card-text"></p>
-                        <a href="#" class="btn btn-primary">A</a>
-                        <a href="#" class="btn btn-primary">B</a>
-                        <a href="#" class="btn btn-primary">C</a>
-                        <a href="#" class="btn btn-primary">D</a>
+            </section>
+        <?php } ?>
+
+        <!-- si le gars est connecté -->
+        <?php if (isset($_SESSION['user']) && !empty($_SESSION['user'])) { ?>
+            <section class="container md">
+                <div class="d-flex justify-content-center pt-5">
+                    <div class="d-flex"></div>
+                    <div class="card bg-light" style="width: 38rem; height: 28rem;">
+                        <div class="card-body">
+                            <h5 class="card-title d-flex justify-content-center fs-2">Question:</h5>
+
+                            <a id="A" href="#" class="btn btn-primary">A</a>
+                            <a id="B" href="#" class="btn btn-primary">B</a>
+                            <a id="C" href="#" class="btn btn-primary">C</a>
+                            <a id="D" href="#" class="btn btn-primary">D</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+        <?php } ?>
     </main>
 
 
